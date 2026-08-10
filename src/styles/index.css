@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-sans antialiased text-gray-800 dark:text-gray-100;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+  ::selection {
+    @apply bg-primary-500/30 text-primary-900 dark:text-primary-100;
+  }
+}
+
+@layer components {
+  .container-app {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Gradient matn — sarlavhalar uchun */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 via-teal-500 to-primary-500 bg-clip-text text-transparent dark:from-primary-400 dark:via-teal-400 dark:to-primary-300;
+  }
+
+  /* Mesh background — hero uchun */
+  .bg-mesh {
+    background:
+      radial-gradient(at 12% 20%, rgba(5, 150, 105, 0.18) 0, transparent 45%),
+      radial-gradient(at 85% 15%, rgba(16, 185, 129, 0.14) 0, transparent 45%),
+      radial-gradient(at 70% 90%, rgba(245, 158, 11, 0.12) 0, transparent 45%),
+      radial-gradient(at 20% 80%, rgba(20, 184, 166, 0.14) 0, transparent 45%);
+  }
+  .dark .bg-mesh {
+    background:
+      radial-gradient(at 12% 20%, rgba(5, 150, 105, 0.22) 0, transparent 45%),
+      radial-gradient(at 85% 15%, rgba(16, 185, 129, 0.16) 0, transparent 45%),
+      radial-gradient(at 70% 90%, rgba(245, 158, 11, 0.1) 0, transparent 45%),
+      radial-gradient(at 20% 80%, rgba(20, 184, 166, 0.16) 0, transparent 45%);
+  }
+
+  /* Panja nuqtali pattern */
+  .bg-paw-pattern {
+    background-image: radial-gradient(rgba(5, 150, 105, 0.08) 1.2px, transparent 1.2px);
+    background-size: 22px 22px;
+  }
+  .dark .bg-paw-pattern {
+    background-image: radial-gradient(rgba(52, 211, 153, 0.1) 1.2px, transparent 1.2px);
+  }
+
+  /* Shisha (glass) effekt */
+  .glass {
+    @apply border border-white/60 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-gray-900/60;
+  }
+
+  /* Asosiy tugmalar */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-primary-600 to-teal-600 px-6 py-3 font-semibold text-white shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 active:scale-95 dark:focus:ring-offset-gray-900;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-gray-300 bg-white/80 px-6 py-3 font-semibold text-gray-700 shadow-sm backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 active:scale-95 dark:border-gray-600 dark:bg-gray-800/80 dark:text-gray-100 dark:hover:bg-gray-800;
+  }
+
+  /* Kartochka — pastki gradient chiziq bilan */
+  .card-lift {
+    @apply rounded-3xl border border-gray-200/80 bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-cardlg dark:border-gray-700/80 dark:bg-gray-800/90;
+  }
+
+  /* Status badge ranglari */
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold;
+  }
+  .badge-green {
+    @apply badge bg-primary-100 text-primary-800 dark:bg-primary-900/50 dark:text-primary-300;
+  }
+  .badge-blue {
+    @apply badge bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300;
+  }
+  .badge-purple {
+    @apply badge bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300;
+  }
+  .badge-amber {
+    @apply badge bg-accent-100 text-accent-700 dark:bg-accent-700/40 dark:text-accent-300;
+  }
+  .badge-gray {
+    @apply badge bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-gray-300 dark:bg-gray-700;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary-500/70;
+}
