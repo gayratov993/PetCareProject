@@ -52,8 +52,7 @@ export default function ConsultationForm() {
       if (error) throw error
       toast.success(t('consultation.success'))
       reset()
-    } catch (err) {
-      console.error(err)
+    } catch {
       toast.error(t('consultation.error'))
     }
   }

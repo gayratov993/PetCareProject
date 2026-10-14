@@ -6,7 +6,7 @@ import { nutritionData } from '../data/nutritionData.js'
  * Bitta hayvon turi uchun oziqlantirish kartochkasi.
  * Tavsiya etilgan va taqiqlangan ovqatlar + yosh guruhiga qarab ratsion.
  */
-export default function NutritionCard({ species, ageGroup }) {
+export default function NutritionCard({ species, ageGroup, ages }) {
   const { t } = useTranslation()
   const data = nutritionData[species]
 
@@ -14,7 +14,8 @@ export default function NutritionCard({ species, ageGroup }) {
 
   const goodItems = data.good.map((key) => t(`nutrition.foods.${key}`))
   const badItems = data.bad.map((key) => t(`nutrition.foods.${key}`))
-  const ageAdvice = data.ages[ageGroup] || data.ages.adult
+  // Supabase'dan kelgan matn ustuvor, bo'lmasa statik zaxira
+  const ageAdvice = ages?.[ageGroup] || data.ages[ageGroup] || data.ages.adult
 
   return (
     <div className="grid gap-6 md:grid-cols-2">

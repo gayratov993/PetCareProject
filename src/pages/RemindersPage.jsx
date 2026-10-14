@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   Bell,
@@ -19,7 +18,6 @@ import Input from '../components/common/Input.jsx'
 import Textarea from '../components/common/Textarea.jsx'
 import Select from '../components/common/Select.jsx'
 import Modal from '../components/common/Modal.jsx'
-import Loader from '../components/common/Loader.jsx'
 import { isSupabaseConfigured } from '../lib/supabaseClient.js'
 import {
   fetchUserPets,
@@ -40,8 +38,7 @@ const emptyForm = { title: '', petId: '', time: '09:00', days: [], notes: '' }
 export default function RemindersPage() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { user, pets, reminders, loading } = useSelector((state) => state.auth)
+  const { user, pets, reminders } = useSelector((state) => state.auth)
   const [form, setForm] = useState(emptyForm)
   const [editing, setEditing] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
@@ -54,13 +51,6 @@ export default function RemindersPage() {
       dispatch(fetchReminders(user.id))
     }
   }, [user, dispatch])
-
-  if (!user && !loading) {
-    navigate('/login')
-    return null
-  }
-
-  if (!user) return <Loader fullScreen />
 
   const petOptions = [
     { value: '', label: t('reminders.noPet') },

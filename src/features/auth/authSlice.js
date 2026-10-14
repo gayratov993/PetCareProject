@@ -265,7 +265,8 @@ export const deleteReminder = createAsyncThunk(
 
 /**
  * Foydalanuvchi so'rovlarini olish.
- */export const fetchUserConsultations = createAsyncThunk(
+ */
+export const fetchUserConsultations = createAsyncThunk(
   'auth/fetchConsultations',
   async (userId, { rejectWithValue }) => {
     if (!isSupabaseConfigured) return []
@@ -376,6 +377,32 @@ export const deleteConsultation = createAsyncThunk(
 )
 
 /**
+ * Tizimdan chiqish — Supabase sessiyasini ham tozalaydi.
+ * Reducer toza bo'lishi uchun yon ta'sir (signOut) shu thunk ichida.
+ */
+export const logoutUser = createAsyncThunk('auth/logout', async () => {
+  if (isSupabaseConfigured) {
+    await supabase.auth.signOut()
+  }
+  return true
+})
+
+/**
+ * Auth state'ni boshlang'ich holatga qaytaradi.
+ */
+function resetAuthState(state) {
+  state.user = null
+  state.profile = null
+  state.pets = []
+  state.consultations = []
+  state.reminders = []
+  state.adminStats = null
+  state.allConsultations = []
+  state.allUsers = []
+  state.error = null
+}
+
+/**
  * Auth state uchun Redux slice.
  */
 const authSlice = createSlice({
@@ -384,6 +411,7 @@ const authSlice = createSlice({
     user: null,
     profile: null,
     loading: false,
+    sessionLoading: true,
     error: null,
     pets: [],
     consultations: [],
@@ -395,17 +423,7 @@ const authSlice = createSlice({
   },
   reducers: {
     logout(state) {
-      state.user = null
-      state.profile = null
-      state.pets = []
-      state.consultations = []
-      state.reminders = []
-      state.adminStats = null
-      state.allConsultations = []
-      state.allUsers = []
-      if (isSupabaseConfigured) {
-        supabase.auth.signOut()
-      }
+      resetAuthState(state)
     },
     clearError(state) {
       state.error = null
@@ -439,9 +457,19 @@ const authSlice = createSlice({
         state.loading = false
         state.error = action.payload
       })
+      .addCase(fetchSession.pending, (state) => {
+        state.sessionLoading = true
+      })
       .addCase(fetchSession.fulfilled, (state, action) => {
+        state.sessionLoading = false
         state.user = action.payload.user
         state.profile = action.payload.profile
+      })
+      .addCase(fetchSession.rejected, (state) => {
+        state.sessionLoading = false
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        resetAuthState(state)
       })
       .addCase(fetchUserPets.fulfilled, (state, action) => {
         state.pets = action.payload

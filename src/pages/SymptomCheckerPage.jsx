@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
@@ -5,16 +6,27 @@ import { Search } from 'lucide-react'
 import PetTypeSelector from '../features/petSymptomChecker/components/PetTypeSelector.jsx'
 import SymptomForm from '../features/petSymptomChecker/components/SymptomForm.jsx'
 import ResultCard from '../features/petSymptomChecker/components/ResultCard.jsx'
-import { setSpecies, setSymptom, searchSymptom, reset } from '../features/petSymptomChecker/symptomSlice.js'
+import {
+  setSpecies,
+  setSymptom,
+  searchSymptom,
+  reset,
+  loadSymptoms,
+} from '../features/petSymptomChecker/symptomSlice.js'
 
 /**
  * Muammoni aniqlash sahifasi (Symptom Checker).
  * Hayvon turi + muammo tanlanadi, natija ko'rsatiladi.
  */
 export default function SymptomCheckerPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const dispatch = useDispatch()
   const { species, symptom, result, searched } = useSelector((state) => state.symptom)
+
+  // Tur yoki til o'zgarganda muammolar ro'yxatini (Supabase/statik) yangilaymiz
+  useEffect(() => {
+    if (species) dispatch(loadSymptoms({ species, lang: i18n.language }))
+  }, [species, i18n.language, dispatch])
 
   const handleSearch = () => {
     if (!species) return

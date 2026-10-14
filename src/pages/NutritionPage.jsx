@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import Select from '../components/common/Select.jsx'
 import NutritionCard from '../features/nutrition/components/NutritionCard.jsx'
+import { fetchNutritionAges } from '../features/nutrition/nutritionApi.js'
 
 const petOptions = [
   { value: 'dog' },
@@ -17,9 +18,21 @@ const petOptions = [
  * Hayvon turi va yosh guruhi bo'yicha ratsion tavsiyalari.
  */
 export default function NutritionPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [species, setSpecies] = useState('dog')
   const [ageGroup, setAgeGroup] = useState('adult')
+  const [ages, setAges] = useState(null)
+
+  // Supabase'dan yosh bo'yicha ratsion matnini olamiz (bo'lmasa statik zaxira ishlatiladi)
+  useEffect(() => {
+    let active = true
+    fetchNutritionAges(species, i18n.language).then((data) => {
+      if (active) setAges(data)
+    })
+    return () => {
+      active = false
+    }
+  }, [species, i18n.language])
 
   const petSelectOptions = petOptions.map((p) => ({
     value: p.value,
@@ -81,7 +94,7 @@ export default function NutritionPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <NutritionCard species={species} ageGroup={ageGroup} />
+        <NutritionCard species={species} ageGroup={ageGroup} ages={ages} />
       </motion.div>
 
       {/* Maslahatlar */}

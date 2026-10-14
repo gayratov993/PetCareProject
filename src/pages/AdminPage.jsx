@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   LayoutDashboard,
@@ -77,8 +76,7 @@ const statCards = (t) => [
 export default function AdminPage() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { user, profile, loading, adminStats, allConsultations, allUsers } = useSelector(
+  const { user, profile, adminStats, allConsultations, allUsers } = useSelector(
     (state) => state.auth,
   )
   const [tab, setTab] = useState('consultations')
@@ -95,20 +93,8 @@ export default function AdminPage() {
     }
   }, [user, isAdmin, dispatch])
 
-  // Kirilmagan bo'lsa — login sahifasiga
-  if (!user && !loading) {
-    navigate('/login')
-    return null
-  }
-
   // Profil hali yuklanmagan bo'lsa
   if (!profile) return <Loader fullScreen />
-
-  // Admin emas — bosh sahifaga qaytaramiz
-  if (!isAdmin) {
-    navigate('/')
-    return null
-  }
 
   const handleStatus = async (id, status) => {
     setBusyId(id)

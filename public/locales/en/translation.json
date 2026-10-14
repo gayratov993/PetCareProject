@@ -238,6 +238,8 @@
     "saved": "Reminder updated",
     "enabled": "Reminder enabled",
     "disabled": "Reminder disabled",
+    "enable": "Enable",
+    "disable": "Disable",
     "deleteConfirm": "Delete this reminder",
     "deleted": "Reminder deleted",
     "edit": "Edit reminder",
@@ -260,7 +262,10 @@
   },
   "common": {
     "loading": "Loading...",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "errorTitle": "Something went wrong",
+    "errorText": "An unexpected error occurred. Please refresh the page or try again.",
+    "retry": "Try again"
   },
   "notFound": {
     "title": "Page not found",

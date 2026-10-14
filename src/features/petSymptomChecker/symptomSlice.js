@@ -1,5 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { symptomsData } from './data/symptomsData.js'
+import { fetchSymptomsBySpecies } from './symptomsApi.js'
+
+/**
+ * Tanlangan hayvon turi uchun muammolar ro'yxatini yuklaydi.
+ * Supabase'dan oladi, bo'lmasa statik zaxiraga qaytadi.
+ */
+export const loadSymptoms = createAsyncThunk(
+  'symptom/load',
+  async ({ species, lang }) => {
+    const dbItems = await fetchSymptomsBySpecies(species, lang)
+    if (dbItems && dbItems.length) return { items: dbItems, source: 'db' }
+    return { items: symptomsData[species] || [], source: 'static' }
+  },
+)
 
 /**
  * Symptom Checker uchun Redux slice.
@@ -12,13 +26,17 @@ const symptomSlice = createSlice({
     symptom: '',
     result: null,
     searched: false,
+    items: [],
+    source: 'static',
+    loading: false,
   },
   reducers: {
     setSpecies(state, action) {
       state.species = action.payload
-      // Yangi tur tanlanganda oldingi natijani tozalaymiz
+      // Yangi tur tanlanganda oldingi natija va ro'yxatni tozalaymiz
       state.result = null
       state.searched = false
+      state.items = []
     },
     setSymptom(state, action) {
       state.symptom = action.payload
@@ -30,7 +48,8 @@ const symptomSlice = createSlice({
       const query = state.symptom.trim().toLowerCase()
       if (!species) return
 
-      const list = symptomsData[species] || []
+      // Supabase'dan yuklangan ro'yxat, bo'lmasa statik zaxira
+      const list = state.items.length ? state.items : symptomsData[species] || []
       // Avval aniq moslikni qidiramiz, topilmasa so'zdagi moslikni qidiramiz
       const match =
         list.find((item) => item.symptom.toLowerCase() === query) ||
@@ -46,7 +65,23 @@ const symptomSlice = createSlice({
       state.symptom = ''
       state.result = null
       state.searched = false
+      state.items = []
+      state.source = 'static'
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadSymptoms.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(loadSymptoms.fulfilled, (state, action) => {
+        state.loading = false
+        state.items = action.payload.items
+        state.source = action.payload.source
+      })
+      .addCase(loadSymptoms.rejected, (state) => {
+        state.loading = false
+      })
   },
 })
 

@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { PawPrint, Plus, ClipboardList, CalendarDays, HeartHandshake, Mail, MessageSquare, Pencil, Trash2, Bell, KeyRound, User } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Button from '../components/common/Button.jsx'
 import Input from '../components/common/Input.jsx'
 import Modal from '../components/common/Modal.jsx'
-import Loader from '../components/common/Loader.jsx'
 import { petImage } from '../lib/petImages.js'
 import {
   fetchUserPets,
@@ -42,8 +41,7 @@ const statusDot = {
 export default function ProfilePage() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { user, profile, pets, consultations, loading } = useSelector((state) => state.auth)
+  const { user, profile, pets, consultations } = useSelector((state) => state.auth)
   const [modalOpen, setModalOpen] = useState(false)
   const [editingPet, setEditingPet] = useState(null)
   const [form, setForm] = useState({ name: '', species: '', breed: '', age: '' })
@@ -59,14 +57,6 @@ export default function ProfilePage() {
       dispatch(fetchUserConsultations(user.id))
     }
   }, [user, dispatch])
-
-  // Foydalanuvchi kirmagan bo'lsa login sahifasiga yuboramiz
-  if (!user && !loading) {
-    navigate('/login')
-    return null
-  }
-
-  if (!user) return <Loader fullScreen />
 
   const memberSince = user.created_at
     ? new Date(user.created_at).toLocaleDateString()

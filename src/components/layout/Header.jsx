@@ -7,7 +7,7 @@ import ThemeToggle from '../ui/ThemeToggle.jsx'
 import LanguageSwitcher from '../ui/LanguageSwitcher.jsx'
 import { useAuth } from '../../hooks/useAuth.js'
 import { useDispatch } from 'react-redux'
-import { logout } from '../../features/auth/authSlice.js'
+import { logoutUser } from '../../features/auth/authSlice.js'
 
 /**
  * Sayt bosh menyusi (Header).
@@ -31,7 +31,7 @@ export default function Header() {
   ]
 
   const handleLogout = () => {
-    dispatch(logout())
+    dispatch(logoutUser())
     navigate('/')
   }
 

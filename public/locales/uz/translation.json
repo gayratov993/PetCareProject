@@ -238,6 +238,8 @@
     "saved": "Eslatma yangilandi",
     "enabled": "Eslatma yoqildi",
     "disabled": "Eslatma o'chirildi (yoqilmagan)",
+    "enable": "Yoqish",
+    "disable": "O'chirish",
     "deleteConfirm": "Bu eslatmani o'chirmoqchimisiz",
     "deleted": "Eslatma o'chirildi",
     "edit": "Eslatmani tahrirlash",
@@ -260,7 +262,10 @@
   },
   "common": {
     "loading": "Yuklanmoqda...",
-    "backHome": "Bosh sahifaga qaytish"
+    "backHome": "Bosh sahifaga qaytish",
+    "errorTitle": "Xatolik yuz berdi",
+    "errorText": "Kutilmagan xatolik yuz berdi. Iltimos, sahifani yangilang yoki qaytadan urinib ko'ring.",
+    "retry": "Qayta urinish"
   },
   "notFound": {
     "title": "Sahifa topilmadi",

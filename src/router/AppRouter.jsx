@@ -2,6 +2,8 @@ import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Layout from '../components/layout/Layout.jsx'
 import Loader from '../components/common/Loader.jsx'
+import ProtectedRoute from '../components/routing/ProtectedRoute.jsx'
+import AdminRoute from '../components/routing/AdminRoute.jsx'
 
 // Sahifalarni lazy load qilish — tezroq ishga tushish uchun
 const HomePage = lazy(() => import('../pages/HomePage.jsx'))
@@ -34,9 +36,18 @@ export function AppRouter() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/reminders" element={<RemindersPage />} />
-          <Route path="/admin" element={<AdminPage />} />
+
+          {/* Himoyalangan sahifalar */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/reminders" element={<RemindersPage />} />
+          </Route>
+
+          {/* Faqat admin uchun */}
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminPage />} />
+          </Route>
+
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
